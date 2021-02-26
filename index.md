@@ -12,8 +12,7 @@
     as part of the <a href="https://aims.robots.ox.ac.uk/">AIMS Centre for Doctoral Training</a>. 
     I'm passionate about building tools which help people make data-driven 
     decisions. More specifically, I do research in the field of probabilistic 
-    programming which aims to automate Bayesian inference. This makes Bayesian 
-    statistics accessible for a wide audience.
+    programming which aims to automate Bayesian inference. 
     <!-- I do research that lies in the intersection of computer science 
     and statistics. Currently, I'm thinking about 
     how tools from programming languages can be used to automate and scale 
