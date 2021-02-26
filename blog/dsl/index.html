@@ -1,0 +1,70 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico"> <title>Building a PPL: Domain Specific Language</title> <div class=franklin-content ><h1 id=building_a_ppl_domain_specific_language ><a href="#building_a_ppl_domain_specific_language" class=header-anchor >Building a PPL: Domain Specific Language</a></h1> <h2 id=metaprogramming_in_julia ><a href="#metaprogramming_in_julia" class=header-anchor >Metaprogramming in Julia</a></h2> <p>Refer to <a href="https://docs.julialang.org/en/v1/manual/metaprogramming/">Julia docs</a>.</p> <p>Allows to build high level interfaces.</p> <h2 id=minijyro_models ><a href="#minijyro_models" class=header-anchor >Minijyro Models</a></h2> <p>Motivation: Want to hide all the bookkeeping of trace and handler stack.</p> <p>Want to keep track of handlers stack.</p> <p>Definition of a model in our language:</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> MinijyroModel
+    handlers_stack::<span class=hljs-built_in >Array</span>{AbstractHandler,<span class=hljs-number >1</span>}
+    model_fn::<span class=hljs-built_in >Function</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> (model::MinijyroModel)(args...)
+    <span class=hljs-comment ># TODO: Possibly give nicer error message when args are given in wrong type.</span>
+    <span class=hljs-keyword >return</span> model.model_fn(model.handlers_stack, args...)
+<span class=hljs-keyword >end</span></code></pre> <p>TODO: Full example of how a function gets translated.</p> <h2 id=using_macros_to_build_a_dsl ><a href="#using_macros_to_build_a_dsl" class=header-anchor >Using Macros to Build a DSL</a></h2> <p>Evaluate tilde calls to sample&#33; statements:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> translate_tilde(expr)
+    <span class=hljs-comment ># NOTE: Code adapted from https://github.com/probcomp/Gen/blob/master/src/dsl/dsl.jl</span>
+    MacroTools.postwalk(expr) <span class=hljs-keyword >do</span> e
+        <span class=hljs-keyword >if</span> MacroTools.<span class=hljs-meta >@capture</span>(e, {addr_} ~ rhs_)
+            <span class=hljs-comment ># NOTE: This does not sample</span>
+            :(Minijyro.sample!($TRACE_SYMBOL, $STACK_SYMBOL, $(addr), $rhs))
+        <span class=hljs-keyword >elseif</span> MacroTools.<span class=hljs-meta >@capture</span>(e, lhs_ ~ rhs_)
+            name_symbol = <span class=hljs-built_in >QuoteNode</span>(lhs)
+            :($lhs = Minijyro.sample!($TRACE_SYMBOL, $STACK_SYMBOL, $name_symbol, $rhs))
+        <span class=hljs-keyword >else</span>
+            e
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <p>Make sure we return a trace and keep track of any return statements that might exist.</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> translate_return(expr, loop_var)
+    MacroTools.postwalk(expr) <span class=hljs-keyword >do</span> e
+        <span class=hljs-keyword >if</span> MacroTools.<span class=hljs-meta >@capture</span>(e, <span class=hljs-keyword >return</span> r_)
+            <span class=hljs-keyword >quote</span>
+                <span class=hljs-keyword >for</span> $(loop_var) <span class=hljs-keyword >in</span> $STACK_SYMBOL
+                    exit!($TRACE_SYMBOL, $(loop_var))
+                <span class=hljs-keyword >end</span>
+                $(TRACE_SYMBOL)[$(RETURN_KEY)] = $r
+                <span class=hljs-keyword >return</span> $TRACE_SYMBOL
+            <span class=hljs-keyword >end</span>
+        <span class=hljs-keyword >else</span>
+            e
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <p>Putting everything together:</p> <pre><code class="julia hljs"><span class=hljs-keyword >macro</span> jyro(expr)
+    fn_dict = MacroTools.splitdef(expr)
+    pushfirst!(fn_dict[:args], STACK_SYMBOL)
+
+    loop_var = gensym()
+    body = translate_tilde(fn_dict[:body])
+    body = translate_return(body, loop_var)
+
+    fn_dict[:body] = <span class=hljs-keyword >quote</span>
+        $TRACE_SYMBOL = <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Any</span>,<span class=hljs-built_in >Any</span>}($(RETURN_KEY) =&gt; <span class=hljs-literal >nothing</span>)
+        <span class=hljs-keyword >for</span> $(loop_var) <span class=hljs-keyword >in</span> $(STACK_SYMBOL)[<span class=hljs-keyword >end</span>:-<span class=hljs-number >1</span>:<span class=hljs-number >1</span>]
+            enter!($TRACE_SYMBOL, $(loop_var))
+        <span class=hljs-keyword >end</span>
+        $(body.args...)
+        <span class=hljs-comment ># NOTE: If the last line of (body.args...) is already a return statement</span>
+        <span class=hljs-comment >#       then the compiler is smart enough to remove this code.</span>
+        <span class=hljs-keyword >for</span> $(loop_var) <span class=hljs-keyword >in</span> $STACK_SYMBOL
+            exit!($TRACE_SYMBOL, $(loop_var))
+        <span class=hljs-keyword >end</span>
+        <span class=hljs-keyword >return</span> $TRACE_SYMBOL
+    <span class=hljs-keyword >end</span>
+
+
+    model_name = fn_dict[:name]
+    fn_name = gensym(model_name)
+    fn_dict[:name] = fn_name
+    fn_dict[:rtype] = <span class=hljs-built_in >Dict</span>{<span class=hljs-built_in >Any</span>,<span class=hljs-built_in >Any</span>} <span class=hljs-comment ># Change return type of generated function to a Dict.</span>
+    fn_expr = esc(MacroTools.combinedef(fn_dict))
+
+    <span class=hljs-keyword >return</span> <span class=hljs-keyword >quote</span>
+        $fn_expr
+
+        $(esc(model_name)) = MinijyroModel(AbstractHandler[], $(esc(fn_name)))
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <p>TODO: Generated handler functions</p> <p>TODO: Add RSS title.</p> <div class=page-foot > <div class=copyright > &copy; Tim Reichelt. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>. </div> </div> </div>

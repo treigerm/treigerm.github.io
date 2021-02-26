@@ -1,3 +1,0 @@
-@def title="Blog"
-
-{{blogposts}}

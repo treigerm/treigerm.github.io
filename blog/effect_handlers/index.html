@@ -1,0 +1,180 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/katex/katex.min.css"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/basic.css"> <link rel=icon  href="/assets/favicon.ico"> <title>Building a PPL: Effect Handlers</title> <div class=franklin-content ><p>TODO: Add RSS title.</p> <h1 id=building_a_ppl_effect_handlers ><a href="#building_a_ppl_effect_handlers" class=header-anchor >Building a PPL: Effect Handlers</a></h1> <p>Goals with this blog series:</p> <ol> <li><p>Show that effect handlers are a powerful abstraction for implementing PPl</p> <li><p>Show that Julia can easily implement high-level DSLs</p> <li><p>Show that Julia is very modular</p> </ol> <p>One blog post for each point. Especially points 2 and 3 make Julia extremely suitable for scientific computing.</p> <p>NOTE: Do not focus on performance in this implementation.</p> <p>Do not assume any Julia knowledge.</p> <h2 id=target_language ><a href="#target_language" class=header-anchor >Target language</a></h2> <p>Describe the language we are going to implement. Use <a href="https://colcarroll.github.io/ppl-api/">Colin Caroll&#39;s tour of PPL APIs</a> model as a showcase.</p> <pre><code class="julia hljs"><span class=hljs-comment ># TODO: Change sample interface.</span>
+<span class=hljs-meta >@jyro</span> <span class=hljs-keyword >function</span> model(xs)
+    D = size(xs)[<span class=hljs-number >2</span>]
+    w ~ MvNormal(zeros(D), I)
+    y ~ MvNormal(xs * w, <span class=hljs-number >0.1</span>*I)
+<span class=hljs-keyword >end</span>
+
+condition!(model, <span class=hljs-built_in >Dict</span>(:y =&gt; y_obs))
+samples, stats = hmc(model, <span class=hljs-number >0.05</span>, <span class=hljs-number >10</span>, <span class=hljs-number >1000</span>, (X,));</code></pre> <h2 id=what_is_a_ppl ><a href="#what_is_a_ppl" class=header-anchor >What is a PPL?</a></h2> <p>Use similar introduction as in Gen and Pyro to motivate PPL. Want to track random choices in a generative function.</p> <p>Code example: Same forward function as in previous section but just using rand calls.</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> model(xs)
+    D = size(xs)[<span class=hljs-number >2</span>]
+    w = rand(MvNormal(zeros(D), I))
+    y = rand(MvNormal(xs * w, <span class=hljs-number >0.1</span>*I))
+    <span class=hljs-keyword >return</span> y
+<span class=hljs-keyword >end</span></code></pre> <p>Things we might want to do:</p> <ul> <li><p>Evaluate log density function.</p> <li><p>Track results of random choices inside <code>model</code></p> <li><p>Conditioned on an observed <code>y</code> we want to infer <code>w</code>.</p> </ul> <h2 id=what_are_effect_handlers ><a href="#what_are_effect_handlers" class=header-anchor >What are effect handlers?</a></h2> <p>Refer to Pyro effect handlers tutorial and the PPL effect handler paper.</p> <p>Refer to more functional CSP style implementation resources &#40;i.e. WebPPL and Mike Innes Effect Handlers&#41;.</p> <p>Explain different concepts that can be implemented with effect handlers.</p> <h3 id=effect_handlers_in_julia ><a href="#effect_handlers_in_julia" class=header-anchor >Effect handlers in Julia</a></h3> <p>Explain messaging implementation.</p> <p>Code example: First generative functions with all the handler code.</p> <pre><code class="julia hljs"><span class=hljs-keyword >abstract type</span> AbstractHandler <span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> enter!(trace::<span class=hljs-built_in >Dict</span>, h::AbstractHandler)
+    <span class=hljs-keyword >return</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> exit!(trace::<span class=hljs-built_in >Dict</span>, h::AbstractHandler)
+    <span class=hljs-keyword >return</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> process_message!(trace::<span class=hljs-built_in >Dict</span>, h::AbstractHandler, msg::<span class=hljs-built_in >Dict</span>)
+    <span class=hljs-keyword >return</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> postprocess_message!(trace::<span class=hljs-built_in >Dict</span>, h::AbstractHandler, msg::<span class=hljs-built_in >Dict</span>)
+    <span class=hljs-keyword >return</span>
+<span class=hljs-keyword >end</span></code></pre> <p>Can build effectful sample function:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> sample!(
+    trace::<span class=hljs-built_in >Dict</span>,
+    handlers_stack::<span class=hljs-built_in >Array</span>{AbstractHandler,<span class=hljs-number >1</span>},
+    name::<span class=hljs-built_in >Any</span>,
+    dist::Distributions.Distribution
+)
+    <span class=hljs-keyword >if</span> length(handlers_stack) == <span class=hljs-number >0</span>
+        <span class=hljs-keyword >return</span> rand(dist)
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-comment ># NOTE: In this simplified case we could replace :args with :dist because</span>
+    <span class=hljs-comment >#       our &quot;effect&quot; is always sampling from a distribution.</span>
+    initial_msg = <span class=hljs-built_in >Dict</span>(
+        :fn =&gt; rand,
+        :args =&gt; (dist, ),
+        :name =&gt; name,
+        :value =&gt; <span class=hljs-literal >nothing</span>,
+        :is_observed =&gt; <span class=hljs-literal >false</span>,
+        :done =&gt; <span class=hljs-literal >false</span>, <span class=hljs-comment ># Use if we still want other handlers to be active.</span>
+        :stop =&gt; <span class=hljs-literal >false</span>, <span class=hljs-comment ># Use if we want handlers below on the stack not to be active.</span>
+        :continuation =&gt; <span class=hljs-literal >nothing</span>
+    )
+    msg = apply_stack!(trace, handlers_stack, initial_msg)
+    <span class=hljs-keyword >return</span> msg[:value]
+<span class=hljs-keyword >end</span></code></pre> <p>Apply effect handlers as follows:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> apply_stack!(
+    trace::<span class=hljs-built_in >Dict</span>,
+    handlers_stack::<span class=hljs-built_in >Array</span>{AbstractHandler,<span class=hljs-number >1</span>},
+    msg::<span class=hljs-built_in >Dict</span>
+)
+    <span class=hljs-comment ># NOTE: This function assumes handlers_stack is not empty.</span>
+    handler_counter = <span class=hljs-number >0</span>
+    <span class=hljs-comment ># Loop through handlers from top of the stack to the bottom.</span>
+    <span class=hljs-keyword >for</span> handler <span class=hljs-keyword >in</span> handlers_stack[<span class=hljs-keyword >end</span>:-<span class=hljs-number >1</span>:<span class=hljs-number >1</span>]
+        handler_counter += <span class=hljs-number >1</span>
+        process_message!(trace, handler, msg)
+        <span class=hljs-keyword >if</span> msg[:stop]
+            <span class=hljs-keyword >break</span>
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-keyword >if</span> !(msg[:value] != <span class=hljs-literal >nothing</span> || msg[:done])
+        msg[:value] = msg[:fn](msg[:args]...)
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-comment ># Loop through handlers from bottom of the stack to the top.</span>
+    <span class=hljs-comment ># If we exited the first loop early then we will start looping from the</span>
+    <span class=hljs-comment ># handler which caused the loop to exit.</span>
+    <span class=hljs-keyword >for</span> handler <span class=hljs-keyword >in</span> handlers_stack[<span class=hljs-keyword >end</span>-handler_counter+<span class=hljs-number >1</span>:<span class=hljs-keyword >end</span>]
+        postprocess_message!(trace, handler, msg)
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-keyword >if</span> msg[:continuation] != <span class=hljs-literal >nothing</span>
+        msg[:continuation](trace, msg)
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-keyword >return</span> msg
+<span class=hljs-keyword >end</span></code></pre> <p>Trace effect handler:</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> TraceHandler &lt;: AbstractHandler <span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> enter!(trace::<span class=hljs-built_in >Dict</span>, h::TraceHandler)
+    trace[:msgs] = <span class=hljs-built_in >Dict</span>()
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> postprocess_message!(trace::<span class=hljs-built_in >Dict</span>, h::TraceHandler, msg::<span class=hljs-built_in >Dict</span>)
+    trace[:msgs][msg[:name]] = copy(msg)
+<span class=hljs-keyword >end</span></code></pre> <p>LogJoint handler:</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> LogJointHandler &lt;: AbstractHandler <span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> enter!(trace::<span class=hljs-built_in >Dict</span>, h::LogJointHandler)
+    trace[:logjoint] = <span class=hljs-number >0.0</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> postprocess_message!(trace::<span class=hljs-built_in >Dict</span>, h::LogJointHandler, msg::<span class=hljs-built_in >Dict</span>)
+    dist = msg[:args][<span class=hljs-number >1</span>]
+    <span class=hljs-keyword >if</span> msg[:value] != <span class=hljs-literal >nothing</span>
+        trace[:logjoint] = trace[:logjoint] + logpdf(dist, msg[:value])
+    <span class=hljs-keyword >else</span>
+        <span class=hljs-comment ># TODO: Warning might be annoying when running the queue handler.</span>
+        <span class=hljs-meta >@warn</span> <span class=hljs-string >&quot;Encountered site with value nothing.&quot;</span> msg[:name]
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <p>Condition Handler:</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> ConditionHandler &lt;: AbstractHandler
+    data::<span class=hljs-built_in >Dict</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> process_message!(trace::<span class=hljs-built_in >Dict</span>, h::ConditionHandler, msg::<span class=hljs-built_in >Dict</span>)
+    <span class=hljs-keyword >if</span> haskey(h.data, msg[:name])
+        msg[:value] = h.data[msg[:name]]
+        msg[:stop] = <span class=hljs-literal >true</span>
+        msg[:is_observed] = <span class=hljs-literal >true</span>
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <h2 id=final_result ><a href="#final_result" class=header-anchor >Final result</a></h2> <p>Code example: Full model with handler code.</p> <h3 id=extra_section_inference_with_discrete_enumeration ><a href="#extra_section_inference_with_discrete_enumeration" class=header-anchor >Extra section: Inference with discrete enumeration</a></h3> <p>Show how effect handlers can be used to implement sequential enumeration inference.</p> <p>Effect handlers replay, queue and escape.</p> <p>Hidden code blocks: Implementations of each handler.</p> <p>Replay effect handler:</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> ReplayHandler &lt;: AbstractHandler
+    trace::<span class=hljs-built_in >Dict</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> process_message!(trace::<span class=hljs-built_in >Dict</span>, h::ReplayHandler, msg::<span class=hljs-built_in >Dict</span>)
+    <span class=hljs-keyword >if</span> haskey(h.trace[:msgs], msg[:name])
+        msg[:value] = h.trace[:msgs][msg[:name]][:value]
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <p>Escape effect handler:</p> <pre><code class="julia hljs"><span class=hljs-keyword >struct</span> EscapeHandler &lt;: AbstractHandler
+    escape_fn::<span class=hljs-built_in >Function</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >struct</span> EscapeException &lt;: <span class=hljs-built_in >Exception</span>
+    trace::<span class=hljs-built_in >Dict</span>
+    name
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> process_message!(trace::<span class=hljs-built_in >Dict</span>, h::EscapeHandler, msg::<span class=hljs-built_in >Dict</span>)
+    <span class=hljs-keyword >if</span> h.escape_fn(msg)
+        msg[:done] = <span class=hljs-literal >true</span>
+        cont(t, m) = throw(EscapeException(t, m[:name]))
+        msg[:continuation] = cont
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span></code></pre> <p>Queue effect handler:</p> <pre><code class="julia hljs"><span class=hljs-keyword >function</span> queue(model::MinijyroModel, queue)
+    max_tries = <span class=hljs-built_in >Int</span>(<span class=hljs-number >1e6</span>) <span class=hljs-comment ># Make sure we do not have infinite loops.</span>
+    <span class=hljs-keyword >function</span> _fn(handlers_stack, args...)
+        <span class=hljs-comment ># TODO: This cannot deal with the fact that model_fn might have been</span>
+        <span class=hljs-comment ># been changed. Alternative is to pass model to the model_fn.</span>
+        m = MinijyroModel(handlers_stack, model.model_fn)
+        <span class=hljs-keyword >for</span> i <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:max_tries
+            top_trace = popfirst!(queue)
+            <span class=hljs-keyword >try</span>
+                queue_m = handle(m, ReplayHandler(top_trace))
+                <span class=hljs-comment ># Escape when we see a new variable that is not in the trace.</span>
+                discr_esc(msg) = !haskey(top_trace[:msgs], msg[:name])
+                queue_m = handle(queue_m, EscapeHandler(discr_esc))
+                queue_m = handle(queue_m, TraceHandler())
+
+                full_trace = queue_m(args...)
+                <span class=hljs-comment ># We only get to the return call if there has been no escape i.e.</span>
+                <span class=hljs-comment ># if the top_trace has been a full trace.</span>
+                <span class=hljs-keyword >return</span> full_trace
+            <span class=hljs-keyword >catch</span> e
+                <span class=hljs-keyword >if</span> <span class=hljs-keyword >isa</span>(e, EscapeException)
+                    <span class=hljs-keyword >for</span> val <span class=hljs-keyword >in</span> support(e.trace[:msgs][e.name][:args][<span class=hljs-number >1</span>])
+                        new_trace = deepcopy(e.trace)
+                        new_trace[:msgs][e.name][:value] = val
+
+                        <span class=hljs-comment ># Make sure that we do not escape again when using this</span>
+                        <span class=hljs-comment ># trace for replay.</span>
+                        new_trace[:msgs][e.name][:done] = <span class=hljs-literal >false</span>
+                        new_trace[:msgs][e.name][:continuation] = <span class=hljs-literal >nothing</span>
+                        push!(queue, new_trace)
+                    <span class=hljs-keyword >end</span>
+                <span class=hljs-keyword >else</span>
+                    throw(e)
+                <span class=hljs-keyword >end</span>
+            <span class=hljs-keyword >end</span>
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >end</span>
+
+    <span class=hljs-keyword >return</span> MinijyroModel(model.handlers_stack, _fn)
+<span class=hljs-keyword >end</span></code></pre> <p>Explanation of inference algorithm. Point to WebPPL book for details.</p> <p>Code example: Implementation of enumeration.</p> <p>TODO: Should we have inference example in Part 3 or here? If we have it in Part 3 then we can use the &quot;nice&quot; syntax.</p> <div class=page-foot > <div class=copyright > &copy; Tim Reichelt. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>. </div> </div> </div>
