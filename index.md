@@ -1,4 +1,4 @@
-@def title = "About"
+@def title = "Tim Reichelt"
 
 ~~~
 <div class="row" id="about-container">
@@ -12,7 +12,8 @@
     as part of the <a href="https://aims.robots.ox.ac.uk/">AIMS Centre for Doctoral Training</a>. 
     I'm passionate about building tools which help people make data-driven 
     decisions. More specifically, I do research in the field of probabilistic 
-    programming which aims to automate Bayesian inference. 
+    programming which allows users to write down probabilistic models and 
+    automate the use of Bayesian inference.
     <!-- I do research that lies in the intersection of computer science 
     and statistics. Currently, I'm thinking about 
     how tools from programming languages can be used to automate and scale 
