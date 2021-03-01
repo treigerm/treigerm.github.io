@@ -40,7 +40,7 @@ font-style: normal;
 html {
     font-family: Helvetica, Arial, sans-serif;
     /* font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif; */
-    font-size  : 17px;
+    font-size  : 18px;
     color: #1c1c1c;
 }
 
@@ -100,9 +100,9 @@ html {
     line-height: 1.35em; }
 
 /* on wide screens, fix content width to a max value */
-@media (min-width: 940px) {
+@media (min-width: 1100px) {
     .franklin-content {
-        width: 905px;
+        width: 1000px;
         margin-left: auto;
         margin-right: auto; }
     }
@@ -349,7 +349,7 @@ ul.blog-posts li span {
 #image-wide {display: block;}
 #image-mobile {display: none;}
 
-@media screen and (max-width: 812px) {
+@media screen and (max-width: 912px) {
     #image-wide {display: none;}
     #image-mobile {display: block;}
 }
@@ -359,7 +359,7 @@ ul.blog-posts li span {
     width: 60%;
 }
 
-@media screen and (max-width: 812px) {
+@media screen and (max-width: 912px) {
     #about-text {
         width: 100%;
     }

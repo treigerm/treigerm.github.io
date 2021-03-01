@@ -6,18 +6,16 @@
     <div class="left" id="about-text">
     <h1 id="myname">Tim Reichelt</h1>
     <p>
-    I'm a PhD student at the University of Oxford lucky to be supervised by 
+    I am a PhD student at the University of Oxford lucky to be supervised by 
     <a href="http://www.cs.ox.ac.uk/people/luke.ong/personal/">Luke Ong</a> and 
     <a href="https://www.robots.ox.ac.uk/~twgr/">Tom Rainforth</a>
     as part of the <a href="https://aims.robots.ox.ac.uk/">AIMS Centre for Doctoral Training</a>. 
-    I'm passionate about building tools which help people make data-driven 
-    decisions. More specifically, I do research in the field of probabilistic 
-    programming which allows users to write down probabilistic models and 
-    automate the use of Bayesian inference.
-    <!-- I do research that lies in the intersection of computer science 
-    and statistics. Currently, I'm thinking about 
-    how tools from programming languages can be used to automate and scale 
-    up Bayesian inference. -->
+    I have broad interests in probabilistic machine learning, Bayesian statistics and 
+    deep learning. 
+    More specifically, I do research in the field of probabilistic 
+    programming languages (PPLs). The goal of PPLs is to automate inference for 
+    any type of probabilistic model that could be expressed in a programming 
+    language. 
     </p>
     <p>
     Before coming to Oxford I received a BSc (Hons) in Computer Science and 
