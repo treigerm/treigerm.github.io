@@ -12,6 +12,8 @@
     as part of the <a href="https://aims.robots.ox.ac.uk/">AIMS Centre for Doctoral Training</a>. 
     I have broad interests in probabilistic machine learning, Bayesian statistics and 
     deep learning. 
+    On a high-level, I like to <i>build tools which help people make better data-driven
+    decisions</i>.
     More specifically, I do research in the field of probabilistic 
     programming languages (PPLs). The goal of PPLs is to automate inference for 
     any type of probabilistic model that could be expressed in a programming 
