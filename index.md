@@ -18,7 +18,6 @@
     programming languages (PPLs). The goal of PPLs is to automate inference for 
     any type of probabilistic model that could be expressed in a programming 
     language. 
-    This is a test change.
     </p>
     <p>
     Before coming to Oxford I received a BSc (Hons) in Computer Science and 
