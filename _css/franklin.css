@@ -423,6 +423,10 @@ ul.blog-posts li span {
     flex: 0 0 140px;
 }
 
+#about-container {
+    margin-top: 100px;
+}
+
 /*My name*/
 
 #myname {
