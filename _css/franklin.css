@@ -6,41 +6,41 @@
    adapted from https://github.com/edwardtufte/et-book/blob/gh-pages/et-book.css */
 
 @font-face {
-font-family: "et-book";
-src: url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot");
-src: url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"), url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype"), url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.svg#etbookromanosf") format("svg");
-font-weight: normal;
-font-style: normal;
+    font-family: "et-book";
+    src: url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot");
+    src: url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"), url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype"), url("../assets/et-book/et-book-roman-line-figures/et-book-roman-line-figures.svg#etbookromanosf") format("svg");
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {
-font-family: "et-book";
-src: url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot");
-src: url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"), url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype"), url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.svg#etbookromanosf") format("svg");
-font-weight: normal;
-font-style: italic;
+    font-family: "et-book";
+    src: url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot");
+    src: url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"), url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype"), url("../assets/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.svg#etbookromanosf") format("svg");
+    font-weight: normal;
+    font-style: italic;
 }
 
 @font-face {
-font-family: "et-book";
-src: url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot");
-src: url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"), url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype"), url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.svg#etbookromanosf") format("svg");
-font-weight: bold;
-font-style: normal;
+    font-family: "et-book";
+    src: url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot");
+    src: url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"), url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype"), url("../assets/et-book/et-book-bold-line-figures/et-book-bold-line-figures.svg#etbookromanosf") format("svg");
+    font-weight: bold;
+    font-style: normal;
 }
 
 @font-face {
-font-family: "et-book-roman-old-style";
-src: url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot");
-src: url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff"), url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") format("truetype"), url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") format("svg");
-font-weight: normal;
-font-style: normal;
+    font-family: "et-book-roman-old-style";
+    src: url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot");
+    src: url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot?#iefix") format("embedded-opentype"), url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff"), url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") format("truetype"), url("../assets/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") format("svg");
+    font-weight: normal;
+    font-style: normal;
 }
 
 html {
     font-family: Helvetica, Arial, sans-serif;
     /* font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif; */
-    font-size  : 18px;
+    font-size: 18px;
     color: #1c1c1c;
 }
 
@@ -49,20 +49,24 @@ html {
 ================================================================== */
 
 .franklin-content .row {
-  display: block; }
+    display: block;
+}
 
 .franklin-content .left {
-  float: left;
-  margin-right: 15px; }
+    float: left;
+    margin-right: 15px;
+}
 
 .franklin-content .right {
     float: right;
-    margin-left: 15px; }
+    margin-left: 15px;
+}
 
 .franklin-content .container img {
     width: auto;
     padding-left: 0;
-    padding-right: 0; }
+    padding-right: 0;
+}
 
 .franklin-content .footnote {
     position: relative;
@@ -77,7 +81,8 @@ html {
 .franklin-content .page-foot a {
     text-decoration: none;
     color: #a6a2a0;
-    text-decoration: underline; }
+    text-decoration: underline;
+}
 
 .page-foot {
     font-size: 80%;
@@ -87,7 +92,8 @@ html {
     margin-top: 6em;
     border-top: 1px solid lightgrey;
     padding-top: 2em;
-    margin-bottom: 4em; }
+    margin-bottom: 4em;
+}
 
 /* ==================================================================
     TEXT GEOMETRY
@@ -97,93 +103,141 @@ html {
     position: relative;
     padding-left: 12.5%;
     padding-right: 12.5%;
-    line-height: 1.35em; }
+    line-height: 1.35em;
+}
 
 /* on wide screens, fix content width to a max value */
 @media (min-width: 1100px) {
     .franklin-content {
         width: 1000px;
         margin-left: auto;
-        margin-right: auto; }
+        margin-right: auto;
     }
+}
 
 /* on narrow device, reduce margins */
 @media (max-width: 480px) {
     .franklin-content {
         padding-left: 6%;
-        padding-right: 6%; }
+        padding-right: 6%;
     }
+}
 
 /* ==================================================================
     TITLES
 ================================================================== */
 
-.franklin-content h1 { font-size: 24px; }
-.franklin-content h2 { font-size: 22px; }
-.franklin-content h3 { font-size: 20px; }
+.franklin-content h1 {
+    font-size: 24px;
+}
 
-.franklin-content h1, h2, h3, h4, h5, h6 {
-    text-align: left; }
+.franklin-content h2 {
+    font-size: 22px;
+}
+
+.franklin-content h3 {
+    font-size: 20px;
+}
+
+.franklin-content h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: left;
+}
 
 .franklin-content h1 {
     padding-bottom: 0.5em;
     margin-top: 1.5em;
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+}
 
 .franklin-content h2 {
     padding-bottom: 0.3em;
     margin-top: 2em;
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+}
 
-.franklin-content h1 a { 
+.franklin-content h1 a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.franklin-content h1 a:hover {text-decoration: none;}
-.franklin-content h2 a { 
+
+.franklin-content h1 a:hover {
+    text-decoration: none;
+}
+
+.franklin-content h2 a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.franklin-content h2 a:hover {text-decoration: none;}
-.franklin-content h3 a { 
+
+.franklin-content h2 a:hover {
+    text-decoration: none;
+}
+
+.franklin-content h3 a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.franklin-content h3 a:hover {text-decoration: none;}
-.franklin-content h4 a { 
+
+.franklin-content h3 a:hover {
+    text-decoration: none;
+}
+
+.franklin-content h4 a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.franklin-content h4 a:hover {text-decoration: none;}
-.franklin-content h5 a { 
+
+.franklin-content h4 a:hover {
+    text-decoration: none;
+}
+
+.franklin-content h5 a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.franklin-content h5 a:hover {text-decoration: none;}
-.franklin-content h6 a { 
+
+.franklin-content h5 a:hover {
+    text-decoration: none;
+}
+
+.franklin-content h6 a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
 }
-.franklin-content h6 a:hover {text-decoration: none;}
+
+.franklin-content h6 a:hover {
+    text-decoration: none;
+}
 
 .franklin-content table {
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
-    text-align: center;}
-.franklin-content th, td{
+    text-align: center;
+}
+
+.franklin-content th,
+td {
     padding: 10px;
-    border: 1px solid black;}
+    border: 1px solid black;
+}
 
 .franklin-content blockquote {
     background: #eeeeee;
     border-left: 7px solid #a8a8a8;
     margin: 1.5em 10px;
     padding: 0.5em 10px;
-    font-style: italic;}
+    font-style: italic;
+}
 
 .franklin-content blockquote p {
-    display: inline; }
+    display: inline;
+}
 
 .about h1 {
     font-size: 28px;
@@ -195,47 +249,64 @@ html {
 
 /* spacing between bullet points */
 .franklin-content li p {
-        margin: 10px 0; }
+    margin: 10px 0;
+}
 
 .franklin-content a {
     /* color: #1c1c1c; */
     color: #004de6;
     /* text-decoration: underline;  */
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 .franklin-content a:hover {
-    text-decoration: none; }
+    text-decoration: none;
+}
 
 /* ==================================================================
     HYPERREFS AND FOOTNOTES
 ================================================================== */
 
-.franklin-content .eqref a  { color: green; }
-.franklin-content .bibref a { color: green; }
+.franklin-content .eqref a {
+    color: green;
+}
+
+.franklin-content .bibref a {
+    color: green;
+}
 
 .franklin-content sup {
     font-size: 70%;
     vertical-align: super;
-    line-height: 0; }
+    line-height: 0;
+}
 
-.franklin-content table.fndef  {
+.franklin-content table.fndef {
     margin: 0;
-    margin-bottom: 10px;}
-.franklin-content .fndef tr, td {
+    margin-bottom: 10px;
+}
+
+.franklin-content .fndef tr,
+td {
     padding: 0;
     border: 0;
-    text-align: left;}
+    text-align: left;
+}
+
 .franklin-content .fndef tr {
     border-left: 2px solid lightgray;
-    }
+}
+
 .franklin-content .fndef td.fndef-backref {
     vertical-align: top;
     font-size: 70%;
-    padding-left: 5px;}
+    padding-left: 5px;
+}
+
 .franklin-content .fndef td.fndef-content {
     font-size: 80%;
-    padding-left: 10px;}
+    padding-left: 10px;
+}
 
 /* ==================================================================
     IMAGES in CONTENT
@@ -244,60 +315,81 @@ html {
 .franklin-content img {
     width: 70%;
     text-align: center;
-    padding-left: 10%; }
+    padding-left: 10%;
+}
 
 .franklin-content .img-small img {
     width: 50%;
     text-align: center;
-    padding-left: 20%; }
+    padding-left: 20%;
+}
 
 /* ==================================================================
     KATEX
 ================================================================== */
 
-body { counter-reset: eqnum; }
+body {
+    counter-reset: eqnum;
+}
 
-.katex { font-size: 1em !important; }
+.katex {
+    font-size: 1em !important;
+}
 
 .katex-display .katex {
-    display: inline-block; } /* overwrite katex settings */
+    display: inline-block;
+}
+
+/* overwrite katex settings */
 
 .katex-display::after {
     counter-increment: eqnum;
     content: "(" counter(eqnum) ")";
     position: relative;
     float: right;
-    padding-right: 5px; }
+    padding-right: 5px;
+}
 
 /* ==================================================================
     CODE & HIGHLIGHT.JS
 ================================================================== */
 
 code {
-    background-color: rgba(27,31,35,0.05);
+    background-color: rgba(27, 31, 35, 0.05);
     padding: 0.1em 0.2em;
     border-radius: 2px;
     font-size: 90%;
 }
 
 /* .franklin-content code { */
-    /* background-color: rgba(27,31,35,0.05); */
-    /* padding: 0.1em 0.2em; */
-    /* border-radius: 2px; */
-    /* font-size: 90%; } */
+/* background-color: rgba(27,31,35,0.05); */
+/* padding: 0.1em 0.2em; */
+/* border-radius: 2px; */
+/* font-size: 90%; } */
 
 .hljs {
     font-size: 90%;
     line-height: 1.35em;
-    border-radius: 10px; }
+    border-radius: 10px;
+}
 
-.hljs-meta, .hljs-metas, .hljs-metap { font-weight: bold; }
+.hljs-meta,
+.hljs-metas,
+.hljs-metap {
+    font-weight: bold;
+}
 
-.hljs-meta { color: rgb(25, 179, 51); }
+.hljs-meta {
+    color: rgb(25, 179, 51);
+}
 
-.hljs-metas { color: red; }
+.hljs-metas {
+    color: red;
+}
 
-.hljs-metap { color: rgb(51, 131, 231); }
+.hljs-metap {
+    color: rgb(51, 131, 231);
+}
 
 /* ==================================================================
     BOXES
@@ -313,7 +405,8 @@ code {
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 0 10px 10px 0;
-    border-left: 5px solid #4C9CF1; }
+    border-left: 5px solid #4C9CF1;
+}
 
 /* blog posts */
 ul.blog-posts {
@@ -334,29 +427,36 @@ ul.blog-posts li span {
 
 #myname {
     font-size: 28px;
-    margin-top: 0px;
+    margin-top: 10px;
     margin-bottom: 0px;
     padding-bottom: 2px;
+    text-align: center;
 }
 
 /*About container*/
-#about-container {
-    padding-top: 30px;
+#about-text {
+    display: grid;
+    place-items: center;
+    text-align: center;
 }
 
 /*My image*/
 
-#image-wide {display: block;}
-#image-mobile {display: none;}
+#image-wide {
+    display: block;
+    margin: auto;
+    width: 30%;
+}
 
 @media screen and (max-width: 912px) {
-    #image-wide {display: none;}
-    #image-mobile {display: block;}
+    #image-wide {
+        width: 220px;
+    }
 }
 
 /*About text*/
 #about-text {
-    width: 60%;
+    text-align: center;
 }
 
 @media screen and (max-width: 912px) {
