@@ -11,6 +11,7 @@
   <p style="text-align: center;">
   <a href="https://github.com/treigerm">GitHub</a> |
   <a href="https://twitter.com/TimReichelt3">Twitter</a> |
+  <a href="https://scholar.google.com/citations?hl=en&user=kHU8HVsAAAAJ">Google Scholar</a> |
   <a href="https://www.linkedin.com/in/tim-reichelt-7ab114250/">LinkedIn</a> |
   <!-- <a href="/assets/cv.pdf">CV</a> | -->
   E-Mail: `lastname` at `robots.ox.ac.uk`
