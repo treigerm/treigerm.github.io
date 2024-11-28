@@ -10,17 +10,17 @@
   <h1 id="myname">Tim Reichelt</h1>
   <p style="text-align: center;">
   <a href="https://github.com/treigerm">GitHub</a> |
-  <a href="https://twitter.com/TimReichelt3">Twitter</a> |
+  <a href="https://bsky.app/profile/treichelt.bsky.social">Bluesky</a> |
   <a href="https://scholar.google.com/citations?hl=en&user=kHU8HVsAAAAJ">Google Scholar</a> |
   <a href="https://www.linkedin.com/in/tim-reichelt-7ab114250/">LinkedIn</a> |
   <!-- <a href="/assets/cv.pdf">CV</a> | -->
   E-Mail: `lastname` at `physics.ox.ac.uk`
   </p>
   <p>
-  I am a postdoc in the <a href="https://www.physics.ox.ac.uk/research/group/climate-processes">Climate Processes group</a> at the University of Oxford, working on developing novel compression algorithms for atmospheric data.
+  I am a postdoc in the <a href="https://www.physics.ox.ac.uk/research/group/climate-processes">Climate Processes group</a> at the University of Oxford, developing novel compression algorithms for atmospheric data.
   I have broad interests in probabilistic machine learning, Bayesian statistics, and deep learning. 
   On a high-level, I like to <i>build tools which help people make better data-driven decisions</i>.
-  Before my postdoc I was PhD student in Oxford supervised by 
+  Before my postdoc, I completed my PhD in Oxford supervised by 
   <a href="http://www.cs.ox.ac.uk/people/luke.ong/personal/">Luke Ong</a> and 
   <a href="https://www.robots.ox.ac.uk/~twgr/">Tom Rainforth</a>
   as part of the <a href="https://aims.robots.ox.ac.uk/">AIMS Centre for Doctoral Training</a>. 
