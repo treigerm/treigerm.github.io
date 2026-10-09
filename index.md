@@ -17,7 +17,7 @@
   E-Mail: `lastname` at `physics.ox.ac.uk`
   </p>
   <p>
-  I am an <a href="https://encode.pillar.vc/">Encode AI Fellow</a> in the <a href="https://www.physics.ox.ac.uk/research/group/climate-processes">Climate Processes group</a> at the University of Oxford, developing a generative model for cloud structures.
+  I am a postdoc in the <a href="https://www.physics.ox.ac.uk/research/group/climate-processes">Climate Processes group</a> at the University of Oxford, developing a generative model for cloud structures.
   Please reach out if you have any questions about my work!
   <!-- I have broad interests in probabilistic machine learning, Bayesian statistics, and deep learning. 
   On a high-level, I like to <i>build tools which help people make better data-driven decisions</i>.
